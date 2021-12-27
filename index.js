@@ -158,6 +158,32 @@ app.post("/setDidAutoReply", (req, res) => {
 
 //
 
+app.post("/getDidReply", (req, res) => {
+  const id = req.body.id;
+  db.query("select * from didreply", [id], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    res.send(result);
+  });
+});
+app.post("/setDidReply", (req, res) => {
+  const commentId = req.body.commentId;
+  const text = req.body.repliedText;
+  db.query(
+    "insert into didreply(commentId,repliedText) values(?,?);",
+    [commentId, text],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+      res.send(result);
+    }
+  );
+});
+
+//
+
 const port = 3001;
 
 app.get("/", (req, res) => {
